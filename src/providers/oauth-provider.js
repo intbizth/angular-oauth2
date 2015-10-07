@@ -132,7 +132,10 @@ function OAuthProvider() {
         data = queryString.stringify(data);
 
         options = angular.extend({
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-OAuth2-Request': 'Access-Token'
+          }
         }, options);
 
         return $http.post(`${config.baseUrl}${config.grantPath}`, data, options).then((response) => {
@@ -163,7 +166,10 @@ function OAuthProvider() {
         data = queryString.stringify(data);
 
         var options = {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-OAuth2-Request': 'Refresh-Token'
+          }
         };
 
         return $http.post(`${config.baseUrl}${config.grantPath}`, data, options).then((response) => {
@@ -186,7 +192,10 @@ function OAuthProvider() {
         });
 
         var options = {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-OAuth2-Request': 'Revoke-Token'
+          }
         };
 
         return $http.post(`${config.baseUrl}${config.revokePath}`, data, options).then((response) => {

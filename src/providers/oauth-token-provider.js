@@ -41,7 +41,7 @@ function OAuthTokenProvider() {
    * @ngInject
    */
 
-  this.$get = function($cookies) {
+  this.$get = function($sessionStorage) {
     class OAuthToken {
 
       /**
@@ -49,7 +49,7 @@ function OAuthTokenProvider() {
        */
 
       setToken(data) {
-        return $cookies.putObject(config.name, data, config.options);
+        $sessionStorage[config.name] = data;
       }
 
       /**
@@ -57,7 +57,7 @@ function OAuthTokenProvider() {
        */
 
       getToken() {
-        return $cookies.getObject(config.name);
+        return $sessionStorage[config.name];
       }
 
       /**
@@ -101,7 +101,7 @@ function OAuthTokenProvider() {
        */
 
       removeToken() {
-        return $cookies.remove(config.name, config.options);
+        delete $sessionStorage[config.name];
       }
     }
 
