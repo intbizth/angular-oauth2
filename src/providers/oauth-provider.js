@@ -4,7 +4,6 @@
  */
 
 import angular from 'angular';
-import queryString from 'query-string';
 
 var defaults = {
   baseUrl: null,
@@ -129,16 +128,12 @@ function OAuthProvider() {
           data.client_secret = config.clientSecret;
         }
 
-        data = queryString.stringify(data);
-
         options = angular.extend({
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-OAuth2-Request': 'Access-Token'
-          }
+          params: data,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }, options);
 
-        return $http.post(`${config.baseUrl}${config.grantPath}`, data, options).then((response) => {
+        return $http.get(`${config.baseUrl}${config.grantPath}`, options).then((response) => {
           OAuthToken.setToken(response.data);
 
           return response;
@@ -163,16 +158,12 @@ function OAuthProvider() {
           data.client_secret = config.clientSecret;
         }
 
-        data = queryString.stringify(data);
-
         var options = {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-OAuth2-Request': 'Refresh-Token'
-          }
+          params: data,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         };
 
-        return $http.post(`${config.baseUrl}${config.grantPath}`, data, options).then((response) => {
+        return $http.post(`${config.baseUrl}${config.grantPath}`, options).then((response) => {
           OAuthToken.setToken(response.data);
 
           return response;
@@ -187,18 +178,16 @@ function OAuthProvider() {
        */
 
       revokeToken() {
-        var data = queryString.stringify({
+        var data = {
           token: OAuthToken.getRefreshToken() ? OAuthToken.getRefreshToken() : OAuthToken.getAccessToken()
-        });
-
-        var options = {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-OAuth2-Request': 'Revoke-Token'
-          }
         };
 
-        return $http.post(`${config.baseUrl}${config.revokePath}`, data, options).then((response) => {
+        var options = {
+          params: data,
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        };
+
+        return $http.post(`${config.baseUrl}${config.revokePath}`, options).then((response) => {
           OAuthToken.removeToken();
 
           return response;

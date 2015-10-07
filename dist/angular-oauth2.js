@@ -108,14 +108,13 @@
                             if (null !== config.clientSecret) {
                                 data.client_secret = config.clientSecret;
                             }
-                            data = queryString.stringify(data);
                             options = angular.extend({
+                                params: data,
                                 headers: {
-                                    "Content-Type": "application/x-www-form-urlencoded",
-                                    "X-OAuth2-Request": "Access-Token"
+                                    "Content-Type": "application/x-www-form-urlencoded"
                                 }
                             }, options);
-                            return $http.post("" + config.baseUrl + "" + config.grantPath, data, options).then(function(response) {
+                            return $http.get("" + config.baseUrl + "" + config.grantPath, options).then(function(response) {
                                 OAuthToken.setToken(response.data);
                                 return response;
                             });
@@ -134,14 +133,13 @@
                             if (null !== config.clientSecret) {
                                 data.client_secret = config.clientSecret;
                             }
-                            data = queryString.stringify(data);
                             var options = {
+                                params: data,
                                 headers: {
-                                    "Content-Type": "application/x-www-form-urlencoded",
-                                    "X-OAuth2-Request": "Refresh-Token"
+                                    "Content-Type": "application/x-www-form-urlencoded"
                                 }
                             };
-                            return $http.post("" + config.baseUrl + "" + config.grantPath, data, options).then(function(response) {
+                            return $http.post("" + config.baseUrl + "" + config.grantPath, options).then(function(response) {
                                 OAuthToken.setToken(response.data);
                                 return response;
                             });
@@ -152,16 +150,16 @@
                     },
                     revokeToken: {
                         value: function revokeToken() {
-                            var data = queryString.stringify({
+                            var data = {
                                 token: OAuthToken.getRefreshToken() ? OAuthToken.getRefreshToken() : OAuthToken.getAccessToken()
-                            });
+                            };
                             var options = {
+                                params: data,
                                 headers: {
-                                    "Content-Type": "application/x-www-form-urlencoded",
-                                    "X-OAuth2-Request": "Revoke-Token"
+                                    "Content-Type": "application/x-www-form-urlencoded"
                                 }
                             };
-                            return $http.post("" + config.baseUrl + "" + config.revokePath, data, options).then(function(response) {
+                            return $http.post("" + config.baseUrl + "" + config.revokePath, options).then(function(response) {
                                 OAuthToken.removeToken();
                                 return response;
                             });
