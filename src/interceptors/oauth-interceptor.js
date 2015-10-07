@@ -9,9 +9,15 @@ function oauthInterceptor($q, $rootScope, OAuthToken) {
   return {
     request: function(config) {
       // Inject `Authorization` header.
+      var token;
       if (OAuthToken.getAuthorizationHeader()) {
-        config.headers = config.headers || {};
-        config.headers.Authorization = OAuthToken.getAuthorizationHeader();
+        token = OAuthToken.getAuthorizationHeader();
+        //TODO: using header
+        //config.headers = config.headers || {};
+        //config.headers.Authorization = OAuthToken.getAuthorizationHeader();
+        token = token.replace('Bearer ', '');
+        config.params = config.params || {};
+        config.params.access_token = token;
       }
 
       return config;
