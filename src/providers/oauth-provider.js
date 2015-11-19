@@ -163,7 +163,7 @@ function OAuthProvider() {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         };
 
-        return $http.post(`${config.baseUrl}${config.grantPath}`, options).then((response) => {
+        return $http.get(`${config.baseUrl}${config.grantPath}`, options).then((response) => {
           OAuthToken.setToken(response.data);
 
           return response;
